@@ -82,7 +82,11 @@ public class QuanLy {
     
     public static void capNhatThongTin(NhanVien nv, DonVi dv){} 
     
-
+    public static void init()
+    {
+    	//đọc dữ liệu từ file
+    	//đặt giờ bắt đầu làm việc, kết thúc làm việc trong NgayLamViec
+    }
     
     
     static void clear()
@@ -99,7 +103,11 @@ public class QuanLy {
     }
     
     public static void main(String [] args){
-        //switch case -> chọn 1 trong các chức năng
+        
+    	init();
+    	
+    	
+    	//switch case -> chọn 1 trong các chức năng
         
     	Scanner input = new Scanner(System.in);
 		String choice;

@@ -6,7 +6,8 @@ public class NgayLamViec {
 	private Time thoiGianDen;
 	private Time thoiGianVe;
 	
-	private 
+	private static Time batDauGioLamViec;
+	private static Time ketThucGioLamViec;
 	
 	public NgayLamViec(String s)
 	{
