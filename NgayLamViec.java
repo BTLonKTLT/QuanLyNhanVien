@@ -1,4 +1,5 @@
 import java.sql.Time;
+<<<<<<< HEAD
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -7,10 +8,19 @@ public class NgayLamViec {
 	private final Date ngay;
 	private final Time thoiGianDen;
 	private final Time thoiGianVe;
+=======
+import java.util.Date;
+
+public class NgayLamViec {
+	private Date ngay;
+	private Time thoiGianDen;
+	private Time thoiGianVe;
+>>>>>>> 69d8fd5866bd3925c6f4b56f31cde3efb9f48124
 	
 	private static Time batDauGioLamViec;
 	private static Time ketThucGioLamViec;
 	
+<<<<<<< HEAD
         private int thoiGianThieuHut;
         
 	public NgayLamViec(String s) throws ParseException
@@ -55,3 +65,16 @@ public class NgayLamViec {
             return minutes;
         }
 }
+=======
+	public NgayLamViec(String s)
+	{
+		
+	}
+	
+	//trả về khoảng thời gian giữa lúc về và đến
+	public float thoiGian()
+	{
+		
+	}
+}
+>>>>>>> 69d8fd5866bd3925c6f4b56f31cde3efb9f48124

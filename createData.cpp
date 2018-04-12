@@ -31,8 +31,8 @@ char* createEmail(char* HD, char* T)
 bool check()
 {
 	if (nam < 2017) return 1;
-	else if ((nam == 2018) && (thang < 4)) return 1;
-	else if ((nam == 2018) && (thang == 4) && (ngay < 10)) return 1;
+	else if ((nam == 2018) && (thang < 3)) return 1;
+	else if ((nam == 2018) && (thang == 3) && (ngay < 31)) return 1;
 	else return 0;
 }
 
@@ -78,9 +78,7 @@ void plusDate()
 	}
 	
 	
-	int weekday = dayofweek(nam, thang, ngay);
-	if (weekday == 6 || weekday == 0)
-		plusDate();
+	
 }
 
 main()
@@ -118,12 +116,18 @@ main()
 		fprintf(f,"%d/%d/%d\n", ngay, thang, nam);
 		
 		ngay = 1; thang = 3; nam = 2018;
-		while(check())
+		while(1)
 		{
 			plusDate();
+			int weekday = dayofweek(nam, thang, ngay);
+				if (weekday == 6 || weekday == 0)
+					continue;
 			if (rand() % 20 == 0) continue;
-			fprintf(f, "%s/%s/%d, %s:%s, %s:%s\n", day[ngay],month[thang], nam, hour[rand() % 3], minute[rand() % 60], hour[rand() % 2 + 3], minute[rand() % 60] );
-												/*	day[ngay],month[thang], nam*/
+			if (check())
+				fprintf(f, "%s/%s/%d, %s:%s, %s:%s\n", day[ngay],month[thang], nam, hour[rand() % 3], minute[rand() % 60], hour[rand() % 2 + 3], minute[rand() % 60] );
+													/*	day[ngay],month[thang], nam*/
+			else 
+				break;
 		}
 	}
 	fclose(f);
