@@ -376,16 +376,11 @@ public class NhanVien {
             out.write(tenSua); out.newLine();           
             out.write(tenDonViSua); out.newLine();         
             out.write(chucVuSua); out.newLine();                                   
-            out.write(formatter1.format(ngaySinhSua)); out.newLine();
-            
-            out.write(queQuanSua); out.newLine();
-            
-            out.write(diaChiSua); out.newLine();
-            
-            out.write(emailSua); out.newLine();
-            
-            out.write(SDTSua); out.newLine();
-            
+            out.write(formatter1.format(ngaySinhSua)); out.newLine();          
+            out.write(queQuanSua); out.newLine();           
+            out.write(diaChiSua); out.newLine();            
+            out.write(emailSua); out.newLine();            
+            out.write(SDTSua); out.newLine();           
             out.write(formatter1.format(nv.ngayBatDauLV)); out.newLine();
             
             int i;
