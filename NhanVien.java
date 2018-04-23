@@ -186,59 +186,6 @@ public class NhanVien {
     public static int getSoNhanVien() {
         return soNhanVien;
     }
-
-    public void setMSNV(String MSNV) {
-        this.MSNV = MSNV;
-    }
-
-    public void setHo(String ho) {
-        this.ho = ho;
-    }
-
-    public void setTen(String ten) {
-        this.ten = ten;
-    }
-
-    public void setTenDonVi(DonVi tenDonVi) {
-        this.tenDonVi = tenDonVi;
-    }
-
-    public void setChucVu(String chucVu) {
-        this.chucVu = chucVu;
-    }
-
-    public void setNgaySinh(Date ngaySinh) {
-        this.ngaySinh = ngaySinh;
-    }
-
-    public void setQueQuan(String queQuan) {
-        this.queQuan = queQuan;
-    }
-
-    public void setDiaChi(String diaChi) {
-        this.diaChi = diaChi;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setSDT(String SDT) {
-        this.SDT = SDT;
-    }
-
-    public void setNgayBatDauLV(Date ngayBatDauLV) {
-        this.ngayBatDauLV = ngayBatDauLV;
-    }
-
-    public void setNgayLamViec(LinkedList<NgayLamViec> ngayLamViec) {
-        this.ngayLamViec = ngayLamViec;
-    }
-
-    public static void setSoNhanVien(int soNhanVien) {
-        NhanVien.soNhanVien = soNhanVien;
-    }
-    
     
     public int soGioThieuHut(){
         //Giả sử ngày làm việc 8 tiếng từ 8:30 đến 17:30
@@ -267,6 +214,7 @@ public class NhanVien {
         System.out.println("Dia chi: " + nv.getDiaChi());
         System.out.println("Email: " + nv.getEmail());
         System.out.println("SDT: " + nv.getSDT());
+        System.out.println("---------------------");
        
     }
     
