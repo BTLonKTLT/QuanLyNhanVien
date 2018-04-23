@@ -1,5 +1,11 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Date;
 import java.util.Scanner;
@@ -50,6 +56,7 @@ public class NhanVien {
             
             if (list.get(i).getTenDonVi().equals(tenDonVi)){
                 
+                //Thêm nhân viên vào đơn vị
                 this.tenDonVi = list.get(i);                              
                 list.get(i).themNhanVien(this);
                 
@@ -63,6 +70,7 @@ public class NhanVien {
                 list.add(donVi);
                 this.tenDonVi = donVi;
                 
+                //Thêm nhân viên và đơn vị
                 donVi.themNhanVien(this); 
         }
            
@@ -262,7 +270,7 @@ public class NhanVien {
        
     }
     
-    public boolean edit(int properties, LinkedList<DonVi> list) throws ParseException
+    public boolean edit(NhanVien nv, int properties, LinkedList<DonVi> list) throws ParseException
     {
     	//properties là biến cờ các thuộc tính cần sửa:_HOTEN, _TENDONVI, _CHUCVU, _NGAYSINH, _QUEQUAN, _DIACHI, _EMAIL, _SDT
     	// (properties & _HOTEN) != 0 ----> cần sửa họ tên
@@ -275,84 +283,206 @@ public class NhanVien {
     	//Sửa trong file
     	//Trả về true nếu sửa thành công, false nếu thất bại
         
-        String MSNV;
-        String ho;
-        String ten;
-        DonVi tenDonVi;
-        String chucVu;
-        Date ngaySinh;
-        String queQuan;
-        String diaChi;
-        String email;
-        String SDT;
+        
+        String hoSua = null;
+        String tenSua = null;
+        String tenDonViSua = null;
+        String chucVuSua = null;
+        Date ngaySinhSua = null;
+        String queQuanSua = null;
+        String diaChiSua = null;
+        String emailSua = null;
+        String SDTSua = null;
         
         Scanner input = new Scanner(System.in);
-        boolean flag = false;
+        boolean flag = true;
+        
+        //Kiểm tra xem cần sửa thành phần nào
         
         if ((properties & _HOTEN) !=0 ){
                        
-            System.out.print("Sua ho: ");
-            ho = input.nextLine();
+            System.out.print("Sua ho thanh: ");
+            hoSua = input.nextLine();
             
-            System.out.print("Sua ten: ");
-            ten = input.nextLine();
+            System.out.print("Sua ten thanh: ");
+            tenSua = input.nextLine();
            
         }
         
         if ((properties & _TENDONVI) !=0 ){
                        
-            System.out.print("Sua don vi: ");
-            String dv = input.nextLine();
-            tenDonVi = new DonVi(dv);
+            System.out.print("Sua don vi thanh: ");
+            tenDonViSua = input.nextLine();
             
         }
         
         if ((properties & _CHUCVU) !=0 ){
                        
-            System.out.print("Sua chuc vu: ");
-            chucVu = input.nextLine();
+            System.out.print("Sua chuc vu thanh: ");
+            chucVuSua = input.nextLine();
            
         }
         
         if ((properties & _NGAYSINH) !=0 ){
                        
-            System.out.print("Sua ngay sinh: ");
+            System.out.print("Sua ngay sinh thanh: ");
             String d = input.nextLine();
-            ngaySinh = new java.sql.Date(new SimpleDateFormat("dd/MM/yyyy").parse(d).getTime());
+            ngaySinhSua = new java.sql.Date(new SimpleDateFormat("dd/MM/yyyy").parse(d).getTime());
                        
         }
         
         if ((properties & _QUEQUAN) !=0 ){
                        
-            System.out.print("Sua que quan: ");
-            queQuan = input.nextLine();
+            System.out.print("Sua que quan thanh: ");
+            queQuanSua = input.nextLine();
            
         }
         if ((properties & _DIACHI) !=0 ){
                        
-            System.out.print("Sua dia chi: ");
-            diaChi = input.nextLine();
+            System.out.print("Sua dia chi thanh: ");
+            diaChiSua = input.nextLine();
            
         }
         
         if ((properties & _EMAIL) !=0 ){
                        
-            System.out.print("Sua email: ");
-            email = input.nextLine();
+            System.out.print("Sua email thanh: ");
+            emailSua = input.nextLine();
            
         }
         
         if ((properties & _SDT) !=0 ){
                        
-            System.out.print("Sua SDT: ");
-            SDT = input.nextLine();
+            System.out.print("Sua SDT thanh: ");
+            SDTSua = input.nextLine();
            
         }
         
-        //list.get(_SDT)
+        //Tạo nhân viên mới
+        NhanVien nvsua = new NhanVien(list, nv.MSNV, hoSua, tenSua, tenDonViSua, chucVuSua, ngaySinhSua,
+                                      queQuanSua, diaChiSua, emailSua, SDTSua, nv.ngayBatDauLV, nv.ngayLamViec);
+ 
+        //Sửa trong file (Thêm nhân viên mới vào file)
+        SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatter2 = new SimpleDateFormat("HH:mm");
         
+        try{
+            File f = new File("ThongTinNhanVien.txt");
+            FileWriter fw = new FileWriter(f,true);
+            BufferedWriter out = new BufferedWriter(fw);
+            
+            out.write(nv.MSNV);
+            out.newLine();
+                       
+            out.write(hoSua);
+            out.newLine();
+            
+            out.write(tenSua);
+            out.newLine();
+            
+            out.write(tenDonViSua);
+            out.newLine();
+            
+            out.write(chucVuSua);
+            out.newLine();
+                                    
+            out.write(formatter1.format(ngaySinhSua));
+            out.newLine();
+            
+            out.write(queQuanSua);
+            out.newLine();
+            
+            out.write(diaChiSua);
+            out.newLine();
+            
+            out.write(emailSua);
+            out.newLine();
+            
+            out.write(SDTSua);
+            out.newLine();
+            
+            out.write(formatter1.format(nv.ngayBatDauLV));
+            out.newLine();
+            
+            int i;
+            for (i=0;i<nv.ngayLamViec.size();i++){
+                String s = "";
+                s += formatter1.format(nv.ngayLamViec.get(i).getNgay()) + ", ";
+                s += formatter2.format(nv.ngayLamViec.get(i).getThoiGianDen()) + ", ";
+                s += formatter2.format(nv.ngayLamViec.get(i).getThoiGianVe());
+                
+                out.write(s);
+                out.newLine();                              
+            }                       
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            flag = false;
+        }
+                      
+        //Xoá nhân viên cũ trong file
         
-
+        ArrayList<String> lines = new ArrayList();
+        String line = null;
+        
+        try{
+            File f = new File("ThongTinNhanVien.txt");
+            FileReader fr = new FileReader(f);
+            BufferedReader br = new BufferedReader(fr);
+            
+            while((line = br.readLine()) != null){
+                if (line.contains(nv.MSNV)){
+                    line = line.replace(nv.MSNV, "");
+                    lines.add(line);
+                    
+                    int count = 30;
+                    while (count>1){
+                        line = br.readLine();
+                        String s = line;
+                        line = line.replace(s, "");
+                        lines.add(line);    
+                        count--;
+                    }         
+                }
+                lines.add(line);
+                }
+            fr.close();
+            br.close();
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+            flag = false;
+        }
+                    
+                
+        try{
+            File f = new File("ThongTinNhanVien.txt");
+            FileWriter fw = new FileWriter(f);
+            BufferedWriter out = new BufferedWriter(fw);
+            
+            int i;
+            for(i=0;i<lines.size();i++){
+                out.write(lines.get(i));
+                if (!lines.get(i).equals("")) out.newLine();            
+            }
+            
+            out.flush();
+            out.close();
+        }        
+        catch(Exception ex){
+            ex.printStackTrace();
+            flag = false;
+        }
+        
+        //Xoá nhân viên cũ trong DonVi
+        int i;
+        for (i=0;i<list.size();i++)
+            if (list.get(i).getTenDonVi().equals(nv.tenDonVi.getTenDonVi()))
+                list.get(i).xoaNhanVien(nv);
+                   
+        //Trả về kết quả đã kiểm tra được chưa
+        return flag;
+    
     }
     
 }

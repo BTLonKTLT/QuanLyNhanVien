@@ -12,7 +12,19 @@ public class NgayLamViec {
 	private static Time ketThucGioLamViec;
 	
         private int thoiGianThieuHut;
-        
+
+        public Date getNgay() {
+            return ngay;
+        }
+
+        public Time getThoiGianDen() {
+            return thoiGianDen;
+        }
+
+        public Time getThoiGianVe() {
+            return thoiGianVe;
+        }
+         
 	public NgayLamViec(String s) throws ParseException
 	{
             //VD: 02/03/2018, 07:52, 18:02. split lấy từng dữ liệu
