@@ -371,38 +371,22 @@ public class NhanVien {
             FileWriter fw = new FileWriter(f,true);
             BufferedWriter out = new BufferedWriter(fw);
             
-            out.write(nv.MSNV);
-            out.newLine();
-                       
-            out.write(hoSua);
-            out.newLine();
+            out.write(nv.MSNV); out.newLine();                      
+            out.write(hoSua); out.newLine();            
+            out.write(tenSua); out.newLine();           
+            out.write(tenDonViSua); out.newLine();         
+            out.write(chucVuSua); out.newLine();                                   
+            out.write(formatter1.format(ngaySinhSua)); out.newLine();
             
-            out.write(tenSua);
-            out.newLine();
+            out.write(queQuanSua); out.newLine();
             
-            out.write(tenDonViSua);
-            out.newLine();
+            out.write(diaChiSua); out.newLine();
             
-            out.write(chucVuSua);
-            out.newLine();
-                                    
-            out.write(formatter1.format(ngaySinhSua));
-            out.newLine();
+            out.write(emailSua); out.newLine();
             
-            out.write(queQuanSua);
-            out.newLine();
+            out.write(SDTSua); out.newLine();
             
-            out.write(diaChiSua);
-            out.newLine();
-            
-            out.write(emailSua);
-            out.newLine();
-            
-            out.write(SDTSua);
-            out.newLine();
-            
-            out.write(formatter1.format(nv.ngayBatDauLV));
-            out.newLine();
+            out.write(formatter1.format(nv.ngayBatDauLV)); out.newLine();
             
             int i;
             for (i=0;i<nv.ngayLamViec.size();i++){
@@ -411,8 +395,7 @@ public class NhanVien {
                 s += formatter2.format(nv.ngayLamViec.get(i).getThoiGianDen()) + ", ";
                 s += formatter2.format(nv.ngayLamViec.get(i).getThoiGianVe());
                 
-                out.write(s);
-                out.newLine();                              
+                out.write(s); out.newLine();                              
             }                       
         }
         catch (Exception e){
