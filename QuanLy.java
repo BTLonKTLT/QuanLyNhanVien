@@ -1,4 +1,3 @@
-
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
@@ -8,88 +7,236 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class QuanLy {
     static LinkedList<DonVi> list;
     static int soDV;
-    
-//    public QuanLy(){
-//        // Đọc dữ liệu từ file vào
-//        // Đọc đơn vị
-//        // Nếu đơn vị chưa tồn tại -> Tạo 1 DonVi mới, soDV++;
-//        // Đơn vị đã tồn tại
-//        // Gọi phương thức themNhanVien(NhanVien nv) của DonVi
-//    }
     
     public static String thongTinCoBan(){
         //Tên chủ tịch
         //tên các công ty con và giám đốc, phó giám đốc tương ứng
         //tên các phòng ban và trưởng, phó phòng tương ứng
         //tổng số nhân viên của công ty
+        
+        int i;
+        String s = null;
+        
+        for (i=0;i<list.size();i++){
+            if (list.get(i).getTenDonVi().equals("BK Corporation"))
+                s = "Chu tich: " + list.get(i).getTruongDonVi() + "\n";
+            //if (list.get(i).getTenDonVi().equals(""))
+        }
+        
+        return s;
     }
     
     public static DonVi timKiemDonVi(String tenDonVi){
     	//tìm kiếm đơn vị theo tên
     	//trả về tham chiếu đến đơn vị đó, không tìm thấy thì trả về null
+        int i; 
+        
+        for (i=0;i<list.size();i++)
+            if (list.get(i).getTenDonVi().equals(tenDonVi))               
+                return list.get(i);
+        
+        return null;        
     }
     
     public static String timKiemTheoHoTen(String hoVaTen){
     	//Trả về các nhân viên dạng xâu, không có thì trả về "Không tìm thấy"
     	//dùng DonVi.timKiemTheoHoTen() để tìm kiếm
     	//dùng NhanVien.toString() để hiển thị thông tin nhân viên
-    	
+        
+        String s = "";
+        LinkedList<NhanVien> listnv;           
+        int i;
+        
+        for (i=0;i<list.size();i++){
+            //Lấy ra 1ist NhanVien có họ tên này trong từng đơn vị 
+            listnv = list.get(i).timKiemTheoHoTen(hoVaTen);
+            
+            //trả về xâu thông tin
+            int j;
+            for (j=0;j<listnv.size();j++)
+                s += listnv.get(i).toString();           
+        }
+        
+        if (s.equals(""))
+            s = "Khong tim thay!";
+        
+        return s;          	
     }
     
     public static String timKiemTheoChucVu(String s){
     	//Trả về các nhân viên dạng xâu, không có thì trả về "Không tìm thấy"
     	//dùng DonVi.timKiemTheoChucVu() để tìm kiếm
     	//dùng NhanVien.toString() để hiển thị thông tin nhân viên 
+        
+        String s1 = "";
+        LinkedList<NhanVien> listnv;           
+        int i;
+        
+        for (i=0;i<list.size();i++){
+            //Lấy ra 1ist NhanVien có chức vụ này trong từng đơn vị 
+            listnv = list.get(i).timKiemTheoChucVu(s);
+            
+            //trả về xâu thông tin
+            int j;
+            for (j=0;j<listnv.size();j++)
+                s1 += listnv.get(i).toString();           
+        }
+        
+        if (s1.equals(""))
+            s1 = "Khong tim thay!";
+        
+        return s1;
     }
     
     public static String timKiemTheoNgaySinh(Date d){
     	//Trả về các nhân viên dạng xâu, không có thì trả về "Không tìm thấy"
     	//dùng DonVi.timKiemTheoNgaySinh() để tìm kiếm
     	//dùng NhanVien.toString() để hiển thị thông tin nhân viên
+        
+        String s = "";
+        LinkedList<NhanVien> listnv;           
+        int i;
+        
+        for (i=0;i<list.size();i++){
+            //Lấy ra 1ist NhanVien có ngày sinh này trong từng đơn vị 
+            listnv = list.get(i).timKiemTheoNgaySinh(d);
+            
+            //trả về xâu thông tin
+            int j;
+            for (j=0;j<listnv.size();j++)
+                s += listnv.get(i).toString();           
+        }
+        
+        if (s.equals(""))
+            s = "Khong tim thay!";
+        return s;
+        
     }
     
     public static NhanVien timKiemMSNV(String msnv)
     {
     	//dùng DonVi.timKiemTheoMSNV() để tìm kiếm
+        int i;
+        NhanVien nv = null;
+        for (i=0;i<list.size();i++)
+            nv = list.get(i).timKiemTheoMSNV(msnv);
+        
+        return nv;
     }
+    
     public static String timKiemTheoMSNV(String s){
     	//Trả về nhân viên dạng xâu, không có thì trả về "Không tìm thấy"
     	//dùng timKiemMSNV để tìm
     	//dùng NhanVien.toString() để hiển thị thông tin nhân viên
+        
+        String s1 = "";   
+        NhanVien nv;
+        int i;
+        
+        for (i=0;i<list.size();i++){
+            //Lấy ra nhân viên có MSNV này 
+            nv = list.get(i).timKiemTheoMSNV(s);
+            
+            //trả về xâu thông tin
+            s1 += nv.toString();
+        }
+        
+        if (s1.equals(""))
+            s1 = "Khong tim thay!";
+        return s1;
+        
     }
     
     public static String tinhTrangLamViec(String MSNV){
     	//Trả về, thông tin cơ bản và tình trạng làm việc của nhân viên
     	//Nếu không tồn tại nhân viên, trả về "Không tìm thấy"
-    	//Dùng DonVi.timKiemTheoMSNV() để tìm nhân viên, rồi dùng NhanVien.toString(), NhanVien.soGioThieuHut()
+    	//Dùng DonVi.timKiemTheoMSNV() để tìm nhân viên, rồi dùng NhanVien.thongTinLamViec(), NhanVien.soGioThieuHut()
+        String s = "";
+        NhanVien nv;
+        int i;
+        
+        for (i=0;i<list.size();i++){
+            //Lấy ra nhân viên có MSNV này 
+            nv = list.get(i).timKiemTheoMSNV(s);
+            
+            //trả về xâu thông tin
+            s += nv.thongTinLamViec();
+        }
+        
+        if (s.equals(""))
+            s = "Khong tim thay!";
+        
+        return s;
     } 
 
-    public static String thongTinDonVi(String TenDonVi){
+    public static String thongTinDonVi(String tenDonVi){
     	//trả về xâu chứa thông tin của 1 đơn vị, dùng timKiemDonVi để tìm kiếm, dùng DonVi.toString()
     	//nếu không tồn tại đơn vị, trả về "Không tồn tại đơn vị"
+        String s = "";
+        DonVi dv;           
+        int i;
+        
+        for (i=0;i<list.size();i++){
+            //Lấy ra đơn vị có tên đơn vị này
+            dv = QuanLy.timKiemDonVi(tenDonVi);
+            
+            //trả về xâu thông tin
+            s = dv.toString();
+        }
+        
+        if (s.equals(""))
+            s = "Khong tim thay!";
+        
+        return s;
     }
     
     public static String thongTinDonVi(DonVi donVi){
     	//trả về xâu chứa thông tin của 1 đơn vị, dùng DonVi.toString()
     	//nếu không tồn tại đơn vị, trả về "Không tồn tại đơn vị"
+        String s = "";
+        DonVi dv;           
+        int i;
+        
+        for (i=0;i<list.size();i++){
+            //Lấy ra đơn vị có tên đơn vị này
+            dv = QuanLy.timKiemDonVi(donVi.getTenDonVi());
+            
+            //trả về xâu thông tin
+            s = dv.toString();
+        }
+        
+        if (s.equals(""))
+            s = "Khong tim thay!";
+        return s;
     }
     
     public static void themNhanVien(NhanVien nv, String tenDonVi){} 
     
     public static void capNhatThongTin(NhanVien nv, DonVi dv){} 
     
-    public static void init()
+    public static void init() throws FileNotFoundException
     {
     	//đọc dữ liệu từ file
     	//đặt giờ bắt đầu làm việc, kết thúc làm việc trong NgayLamViec
+        File f = new File("ThongTinNhanVien.txt");
+        FileReader fr = new FileReader(f);
+        
+        
+        
+        
+        
     }
     
     
-    static void clear()
+    static void clear() throws IOException
     {
     	String os = System.getProperty("os.name");
     	if (os.contains("Windows"))
@@ -102,7 +249,7 @@ public class QuanLy {
     	}
     }
     
-    public static void main(String [] args){
+    public static void main(String [] args) throws java.text.ParseException, IOException{
         
     	init();
     	
@@ -161,7 +308,7 @@ public class QuanLy {
 					case '3':
 						System.out.println("___________Tìm kiếm nhân viên theo ngày sinh___________");
 						System.out.print("Nhập ngày sinh (dd/mm/yyyy): ");
-						SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy")
+						SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy");
 						try{
 							Date ngaySinh = format.parse(input.nextLine());
 						
@@ -255,7 +402,7 @@ public class QuanLy {
 							properties = properties | (1<<(i-1));
 						}
 					}
-					if (nv.edit(properties, list) == true)
+					if (nv.edit(nv, properties, list) == true)
 					{
 						System.out.println("Cập nhật thành công");
 					}

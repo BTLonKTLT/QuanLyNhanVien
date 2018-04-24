@@ -98,13 +98,18 @@ public class DonVi {
         soNV--;          	
     }
     
-    public void toString(DonVi dv) {
+    @Override
+    public String toString() {
     	//hiển thị thông tin đơn vị
         //Liệt kê tất cả các nhân viên trong đơn vị
         
         int i;
-        for (i=0;i<dv.list.size();i++)
-            dv.list.get(i).toString(dv.list.get(i));       
+        String s = "";
+        
+        for (i=0;i<this.list.size();i++)
+            s += this.list.get(i).toString();
+        
+        return s;
     }
     
     
@@ -149,6 +154,7 @@ public class DonVi {
     }
     
     public NhanVien timKiemTheoMSNV(String s){
+        
         int i;
         for (i=0;i<list.size();i++){
             if (list.get(i).getMSNV().equals(s)){

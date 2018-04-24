@@ -3,6 +3,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -203,19 +204,35 @@ public class NhanVien {
                                
     }  
     
-    public void toString(NhanVien nv){
-       
-        System.out.println("Ma so nhan vien: " + nv.getMSNV());
-        System.out.println("Ho ten nhan vien: " + nv.getHo() + " " + nv.getTen());
-        System.out.println("Don vi: " + nv.getTenDonVi().getTenDonVi());
-        System.out.println("Chuc vu: " + nv.getChucVu());
-        System.out.println("Ngay thang nam sinh: " + nv.getNgaySinh());
-        System.out.println("Que quan: " + nv.getQueQuan());
-        System.out.println("Dia chi: " + nv.getDiaChi());
-        System.out.println("Email: " + nv.getEmail());
-        System.out.println("SDT: " + nv.getSDT());
-        System.out.println("---------------------");
-       
+    //trả về xâu thông tin gồm thông tin làm việc trong tháng hiện tại và số giờ thiếu hụt
+    public String thongTinLamViec(){
+        String s = "";
+        int i;
+        
+        for (i=0;i<ngayLamViec.size();i++)
+            s += ngayLamViec.get(i).toString();
+        
+        s += "So gio thieu hut: " + this.soGioThieuHut() + "\n";
+        
+        return s;
+    }
+    
+    @Override
+    public String toString(){
+        
+        String s = "";
+        s += "Ma so nhan vien: " + this.getMSNV() + "\n";
+        s += "Ho ten nhan vien: " + this.getHo() + " " + this.getTen() + "\n";
+        s += "Don vi: " + this.getTenDonVi().getTenDonVi() + "\n";
+        s += "Chuc vu: " + this.getChucVu() + "\n";
+        s += "Ngay thang nam sinh: " + this.getNgaySinh() + "\n";
+        s += "Que quan: " + this.getQueQuan() + "\n";
+        s += "Dia chi: " + this.getDiaChi() + "\n";
+        s += "Email: " + this.getEmail() + "\n";
+        s += "SDT: " + this.getSDT() + "\n";
+        s += "---------------------\n";
+        
+        return s;
     }
     
     public boolean edit(NhanVien nv, int properties, LinkedList<DonVi> list) throws ParseException
@@ -341,15 +358,14 @@ public class NhanVien {
                 out.write(s); out.newLine();                              
             }                       
         }
-        catch (Exception e){
-            e.printStackTrace();
+        catch (IOException e){
             flag = false;
         }
                       
         //Xoá nhân viên cũ trong file
         
         ArrayList<String> lines = new ArrayList();
-        String line = null;
+        String line;
         
         try{
             File f = new File("ThongTinNhanVien.txt");
@@ -375,8 +391,7 @@ public class NhanVien {
             fr.close();
             br.close();
         }
-        catch(Exception ex){
-            ex.printStackTrace();
+        catch(IOException ex){
             flag = false;
         }
                     
@@ -395,8 +410,7 @@ public class NhanVien {
             out.flush();
             out.close();
         }        
-        catch(Exception ex){
-            ex.printStackTrace();
+        catch(IOException ex){
             flag = false;
         }
         

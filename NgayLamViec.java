@@ -8,8 +8,8 @@ public class NgayLamViec {
 	private final Time thoiGianDen;
 	private final Time thoiGianVe;
 	
-	private static Time batDauGioLamViec;
-	private static Time ketThucGioLamViec;
+	private final Time batDauGioLamViec;
+	private final Time ketThucGioLamViec;
 	
         private int thoiGianThieuHut;
 
@@ -58,5 +58,22 @@ public class NgayLamViec {
                                     
             return hours;
 	}
+        
+        @Override
+        //Hiển thị thông tin làm việc trong ngày
+        public String toString(){
+            
+            SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat formatter2 = new SimpleDateFormat("HH:mm");
+            
+            String s = "";
+            s += formatter1.format(this.ngay) + ", ";
+            s += formatter2.format(this.thoiGianDen) + ", ";
+            s += formatter2.format(this.thoiGianVe) + "\n";
+                       
+            return s;
+            
+        }
+        
         
 }
