@@ -29,18 +29,22 @@ public class NhanVien {
     public static final int  _HOTEN = 0b1, _TENDONVI = 0b10, _CHUCVU = 0b100, _NGAYSINH = 0b1000; 
     public static final int  _QUEQUAN = 0b10000, _DIACHI = 0b100000, _EMAIL = 0b1000000, _SDT = 0b10000000; 
     
+    static String tenDV;
     
     //Phương thức khởi tạo nhiều tham số
-    public NhanVien(LinkedList<DonVi> list, String MSNV, String ho, String ten, String tenDonVi, 
+    public NhanVien(/*LinkedList<DonVi> list,*/ String MSNV, String ho, String ten, String tenDonVi, 
                     String chucVu, Date ngaySinh, String queQuan, String diaChi, String email, String SDT, 
                     Date ngayBatDauLV, LinkedList<NgayLamViec> ngayLamViec)
     {
     	//duyệt list, nếu đã tồn tại đơn vị: gán cho tenDonVi, thêm nhân viên vào đơn vị đó. 
         //Nếu không có, tạo 1 đơn vị mới, rồi thêm vào đơn vị đó
     	
+        DonVi dv = new DonVi(tenDonVi);
+        
         this.MSNV = MSNV;
         this.ho = ho;
         this.ten = ten;
+        this.tenDonVi = dv;
         this.chucVu = chucVu;
         this.ngaySinh = ngaySinh;
         this.queQuan = queQuan;
@@ -50,7 +54,7 @@ public class NhanVien {
         this.ngayBatDauLV = ngayBatDauLV;
         this.ngayLamViec = ngayLamViec;
         
-        int i;
+        /*int i;
         int test = 0; //Kiểm tra xem có tồn tại đơn vị chưa.
         
         for (i=0;i<list.size();i++){
@@ -58,22 +62,22 @@ public class NhanVien {
             if (list.get(i).getTenDonVi().equals(tenDonVi)){
                 
                 //Thêm nhân viên vào đơn vị
-                this.tenDonVi = list.get(i);                              
+                this.tenDonVi = list.get(i);                
                 list.get(i).themNhanVien(this);
                 
                 test = 1; //Nếu đã tồn tại thì đánh dấu.
                 
             } 
         }
-        if (test == 0){
+        if (test == 0 || list.isEmpty()){
                 
                 DonVi donVi = new DonVi(tenDonVi);
                 list.add(donVi);
                 this.tenDonVi = donVi;
                 
                 //Thêm nhân viên và đơn vị
-                donVi.themNhanVien(this); 
-        }
+                donVi.themNhanVien(nv); 
+        }*/
            
         soNhanVien++;    
                 
@@ -81,7 +85,7 @@ public class NhanVien {
                  
        
     //Phương thức khởi tạo ít tham số, nhập từ bàn phím các dữ liệu
-    public NhanVien(LinkedList<DonVi> list) throws ParseException
+    public NhanVien(/*LinkedList<DonVi> list*/) throws ParseException
 	{
 		
 		// Nhập dữ liệu từ bàn phím các thông tin: họ tên, ngày sinh, đơn vị, chức vụ, quê quán, địa chỉ, email,
@@ -109,7 +113,7 @@ public class NhanVien {
             
             System.out.print("Ten: "); ten = input.nextLine();
             
-            System.out.print("Don vi: "); tenDonVi = input.nextLine();
+            System.out.print("Don vi: "); tenDonVi = input.nextLine(); NhanVien.tenDV = tenDonVi;
             
             System.out.print("Chuc vu: "); chucVu = input.nextLine();
             
@@ -127,12 +131,13 @@ public class NhanVien {
             System.out.print("Ngay bat dau lam viec: "); String s2 = input.nextLine();
             ngayBatDauLV = new java.sql.Date(new SimpleDateFormat("dd/MM/yyyy").parse(s2).getTime());
             
-            LinkedList<NgayLamViec> ngayLamViec = new LinkedList<>();
+            LinkedList<NgayLamViec> ngayLamViec = new LinkedList();
             
-            NhanVien nv = new NhanVien(list, MSNV, ho, ten, tenDonVi, chucVu, ngaySinh, queQuan, diaChi, 
+            NhanVien nv = new NhanVien(/*list,*/ MSNV, ho, ten, tenDonVi, chucVu, ngaySinh, queQuan, diaChi, 
                      email, SDT, ngayBatDauLV, ngayLamViec);
             	
 	}
+    
     
     // Các phương thức getter và setter
 
@@ -150,13 +155,13 @@ public class NhanVien {
 
     public DonVi getTenDonVi() {
         return tenDonVi;
-    }
+    }    
 
     public String getChucVu() {
         return chucVu;
     }
 
-    public Date getNgaySinh() {
+    public Date getNgaySinh() {       
         return ngaySinh;
     }
 
@@ -200,7 +205,7 @@ public class NhanVien {
             hours += ngayLamViec.get(i).thoiGian();                        
         }
         
-        return (int) Math.ceil(hours);
+        return Math.abs((int) Math.ceil(hours));
                                
     }  
     
@@ -212,7 +217,7 @@ public class NhanVien {
         for (i=0;i<ngayLamViec.size();i++)
             s += ngayLamViec.get(i).toString();
         
-        s += "So gio thieu hut: " + this.soGioThieuHut() + "\n";
+        s += "So gio thieu hut: " + soGioThieuHut() + " gio \n";
         
         return s;
     }
@@ -224,8 +229,11 @@ public class NhanVien {
         s += "Ma so nhan vien: " + this.getMSNV() + "\n";
         s += "Ho ten nhan vien: " + this.getHo() + " " + this.getTen() + "\n";
         s += "Don vi: " + this.getTenDonVi().getTenDonVi() + "\n";
-        s += "Chuc vu: " + this.getChucVu() + "\n";
-        s += "Ngay thang nam sinh: " + this.getNgaySinh() + "\n";
+        s += "Chuc vu: " + this.getChucVu() + "\n";        
+        String d;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        d = formatter.format(ngaySinh);
+        s += "Ngay thang nam sinh: " + d + "\n";
         s += "Que quan: " + this.getQueQuan() + "\n";
         s += "Dia chi: " + this.getDiaChi() + "\n";
         s += "Email: " + this.getEmail() + "\n";
@@ -324,7 +332,7 @@ public class NhanVien {
         }
         
         //Tạo nhân viên mới
-        NhanVien nvsua = new NhanVien(list, nv.MSNV, hoSua, tenSua, tenDonViSua, chucVuSua, ngaySinhSua,
+        NhanVien nvsua = new NhanVien(/*list,*/ nv.MSNV, hoSua, tenSua, tenDonViSua, chucVuSua, ngaySinhSua,
                                       queQuanSua, diaChiSua, emailSua, SDTSua, nv.ngayBatDauLV, nv.ngayLamViec);
  
         //Sửa trong file (Thêm nhân viên mới vào file)
@@ -365,29 +373,27 @@ public class NhanVien {
         //Xoá nhân viên cũ trong file
         
         ArrayList<String> lines = new ArrayList();
-        String line;
+        String line1, line2;
         
         try{
             File f = new File("ThongTinNhanVien.txt");
             FileReader fr = new FileReader(f);
             BufferedReader br = new BufferedReader(fr);
             
-            while((line = br.readLine()) != null){
-                if (line.contains(nv.MSNV)){
-                    line = line.replace(nv.MSNV, "");
-                    lines.add(line);
-                    
-                    int count = 30;
-                    while (count>1){
-                        line = br.readLine();
-                        String s = line;
-                        line = line.replace(s, "");
-                        lines.add(line);    
-                        count--;
-                    }         
+            while((line1 = br.readLine()) != null){
+                if (line1.contains("NV1")){
+                    line1 = line1.replace(line1, "");
+                    lines.add(line1);  
+                    while((line2 = br.readLine()) != null && line2.substring(0,2).compareTo("NV")!=0){                       
+                            line2 = line2.replace(line2, "");
+                            lines.add(line2);
+                        }
+                    if (line2 != null && line2.substring(0,2).compareTo("NV")==0)
+                        lines.add(line2);
+                    }
+                lines.add(line1);
                 }
-                lines.add(line);
-                }
+                       
             fr.close();
             br.close();
         }

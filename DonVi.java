@@ -55,7 +55,7 @@ public class DonVi {
             case "Chu tich":                
             case "Giam doc":               
             case "Truong phong":
-                truongDonVi = list.get(i).getHo() + list.get(i).getTen();
+                truongDonVi = list.get(i).getHo() + " " + list.get(i).getTen();
             default:
                 break;
         } 
@@ -74,7 +74,7 @@ public class DonVi {
             case "Pho chu tich":              
             case "Pho giam doc":               
             case "Pho phong":
-                phoDonVi = list.get(i).getHo() + list.get(i).getTen();
+                phoDonVi += list.get(i).getHo() + " " + list.get(i).getTen() + "\n";
             default:
                 break;
         }    
@@ -84,7 +84,7 @@ public class DonVi {
     void themNhanVien(NhanVien nv){        
     // list.add(nv);    
     // tăng số nhân viên lên 1
-    
+
         list.add(nv);
         soNV++;      
     }
@@ -109,6 +109,8 @@ public class DonVi {
         for (i=0;i<this.list.size();i++)
             s += this.list.get(i).toString();
         
+        s += "So nhan vien cua don vi: " + this.soNV;
+        
         return s;
     }
     
@@ -119,7 +121,7 @@ public class DonVi {
         int i;
         String s2;        
         for (i=0;i<list.size();i++){
-            s2 = list.get(i).getHo() + list.get(i).getTen();
+            s2 = list.get(i).getHo() + " " + list.get(i).getTen();
             if (s2.equals(s))
                 listnv.add(list.get(i));
         }
@@ -155,14 +157,15 @@ public class DonVi {
     
     public NhanVien timKiemTheoMSNV(String s){
         
+        NhanVien nv = null;        
         int i;
         for (i=0;i<list.size();i++){
             if (list.get(i).getMSNV().equals(s)){
-                return list.get(i);
+                nv = list.get(i);
+                if (nv != null) break;
             }
         }
         
-        return null;
+        return nv;
     }
-    
 }
