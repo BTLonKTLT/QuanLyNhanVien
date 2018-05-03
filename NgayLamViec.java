@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class NgayLamViec {
+    
 	private final Date ngay;
 	private final Time thoiGianDen;
 	private final Time thoiGianVe;
@@ -73,7 +74,5 @@ public class NgayLamViec {
                        
             return s;
             
-        }
-        
-        
+        }             
 }

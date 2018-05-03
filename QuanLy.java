@@ -4,9 +4,11 @@ import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 
@@ -105,11 +107,11 @@ public class QuanLy {
     public static NhanVien timKiemMSNV(String msnv)
     {
     	//dùng DonVi.timKiemTheoMSNV() để tìm kiếm
-        int i;
         NhanVien nv = null;
-        for (i=0;i<list.size();i++)
+        for (int i=0;i<list.size();i++){
             nv = list.get(i).timKiemTheoMSNV(msnv);
-        
+            if (nv != null) break;
+        }
         return nv;
     }
     
@@ -204,40 +206,65 @@ public class QuanLy {
         return s;
     }
     
-    public static void themNhanVien(NhanVien nv, String tenDonVi){
-        if (list.isEmpty()){
-            DonVi dv = new DonVi(tenDonVi);
-            soDV++;
-            list.add(dv);
-            dv.themNhanVien(nv);
-        } else{
-            boolean flag = false;
-            for (int j = 0; j < list.size(); j++)
-                if (list.get(j).getTenDonVi().equals(tenDonVi)){
-                    list.get(j).themNhanVien(nv);
-                    flag = true;
+    public static void themNhanVien(NhanVien nv){  
+        
+        //Kiểm tra xem đơn vị tồn tại chưa
+        //Nếu có rồi thì thêm nhân viên
+        //Chưa có thì tạo 1 đơn vị mới rồi thêm nhân viên
+        
+        String tenDV = nv.getTenDonVi().getTenDonVi();
+        DonVi dv = timKiemDonVi(tenDV);
+                              
+        if (dv != null){            
+            for (int i = 0; i < list.size(); i++)
+                if (list.get(i).getTenDonVi().equals(tenDV)){
+                    list.get(i).themNhanVien(nv);
+                    break;
                 }
-            if (!flag){
-                DonVi dv = new DonVi(tenDonVi);
+        }
+        else{
+                dv = new DonVi(tenDV);
                 soDV++;
                 list.add(dv);
                 dv.themNhanVien(nv);
             }
+        
+        //Mở file để ghi nhân viên mới vào
+        SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
+        
+        try{
+            File f = new File("ThongTinNhanVien.txt");
+            FileWriter fw = new FileWriter(f,true);
+            BufferedWriter out = new BufferedWriter(fw);
+            
+            out.write(nv.getMSNV()); out.newLine();                      
+            out.write(nv.getHo()); out.newLine();            
+            out.write(nv.getTen()); out.newLine();           
+            out.write(nv.getTenDonVi().getTenDonVi()); out.newLine();         
+            out.write(nv.getChucVu()); out.newLine();                                   
+            out.write(formatter1.format(nv.getNgaySinh())); out.newLine();          
+            out.write(nv.getQueQuan()); out.newLine();           
+            out.write(nv.getDiaChi()); out.newLine();            
+            out.write(nv.getEmail()); out.newLine();            
+            out.write(nv.getSDT()); out.newLine();           
+            out.write(formatter1.format(nv.getNgayBatDauLV())); out.newLine();
+                         
+            out.flush();
+            out.close();
         }
-        boolean flag = false;
-        for (int k = 0; k < list.size(); k++)
-            if (list.get(k).timKiemTheoMSNV(nv.getMSNV()) != null){
-                flag = true;
-                break;
-            }
-        if (flag) 
-                System.out.println("Them thanh cong!");
-            else
-                System.out.println("Them khong thanh cong!");
+        catch (IOException e){}
+        
+        NhanVien nvien = timKiemMSNV(nv.getMSNV());
+        if (nvien != null){    
+            System.out.println("-------------------");
+            System.out.println("Them thanh cong!");
+        }
+        else{    
+            System.out.println("-------------------");
+            System.out.println("Them khong thanh cong!");
+        }
                                 
-    } 
-    
-    public static void capNhatThongTin(NhanVien nv, DonVi dv){} 
+    }   
     
     public static String thongTinCoBan(){
         //Tên chủ tịch
@@ -346,7 +373,7 @@ public class QuanLy {
                     ngayLamViec.add(ngaylv);                                       
                 }
                 
-                nv = new NhanVien(/*list,*/ MSNV, ho, ten, tenDonVi, chucVu, ngaySinh, 
+                nv = new NhanVien(MSNV, ho, ten, tenDonVi, chucVu, ngaySinh, 
                                   queQuan, diaChi, email, SDT, ngayBatDauLV, ngayLamViec);
                 
                 soNhanVien++;
@@ -371,69 +398,14 @@ public class QuanLy {
                         }
                             
                 }                                                                                                                                      
-                }
-                       
-            NhanVien nvien = null;
-            /*Scanner input = new Scanner(System.in);
-            System.out.println("Nhập mã nhân viên: ");
-            String maNhanVien = input.nextLine();
-            for (int i=0;i<list.size();i++){
-                //if (list.get(i).getTenDonVi().equals("BK Food"))
-                //NhanVien nvien = list.get(i).timKiemTheoMSNV("NV9");
-                //LinkedList<NhanVien> listnv;
-                
-                //String tmp = "26/1/1989";
-                //Date d = new java.sql.Date(new SimpleDateFormat("dd/MM/yyyy").parse(tmp).getTime());
-                
-                //if (list.get(i).timKiemTheoNgaySinh(d))
-                //    listnv = list.get(i).timKiemTheoNgaySinh(d);
-                    //if (nvien != null) break;
-                
-                //for (int j=0;j<listnv.size();j++){
-                //    System.out.println(listnv.get(j).toString());
-                //System.out.println(nvien.toString());
-                nvien = list.get(i).timKiemTheoMSNV(maNhanVien);
-                if (nvien != null) break;
-                
-                
-		//nv = timKiemMSNV(maNhanVien);
-		//if (nv == null)
-		//{
-		//System.out.println("Không tồn tại");
-		//}
-                }
-            
-            //System.out.println(nvien.getTenDonVi().getTenDonVi());
-            //}
-            System.out.println(nvien.toString());
-            //System.out.println(thongTinCoBan());
-            //System.out.println(soDV);
-            //System.out.println(list.get(2));*/
-            
+            }
                                                          
             fr.close();
             br.close();
             }
-        catch (IOException ex) {
-        }         
-       
-       
+        catch (IOException ex) {}                     
     }
-    
-    
-    static void clear() throws IOException
-    {
-    	String os = System.getProperty("os.name");
-    	if (os.contains("Windows"))
-    	{
-    		Runtime.getRuntime().exec("cls");
-    	}
-    	else
-    	{
-    		Runtime.getRuntime().exec("clear");
-    	}
-    }
-    
+        
     public final static void clearConsole(){
         try{
             final String os = System.getProperty("os.name");
@@ -562,15 +534,12 @@ public class QuanLy {
 					System.out.println("Không hợp lệ");
 				}
 				
-				
 				break;
 			case '5': //Thêm nhân viên mới
 				System.out.println("___________Thêm nhân viên mới___________");
 				NhanVien nv = new NhanVien();
-                                String tenDonVi = NhanVien.tenDV;
-                                themNhanVien(nv,tenDonVi);
-                                                                                                         
-				
+                                themNhanVien(nv);
+                                                                                                         				
 				break;
                                 
 			case '6': //Cập nhật thông tin nhân viên

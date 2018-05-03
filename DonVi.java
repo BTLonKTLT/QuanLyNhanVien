@@ -1,16 +1,6 @@
 import java.util.Date;
 import java.util.LinkedList;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author pc
- */
 public class DonVi {
     private final LinkedList<NhanVien> list;
     private int soNV;
@@ -23,26 +13,10 @@ public class DonVi {
         LinkedList<NhanVien> nv = new LinkedList();
         this.list = nv;                	
     }
-    
-    // Các phương thức getter và setter
-    public int getSoNV(){
-	return soNV;
-    }
-
-    public void setSoNV(int soNV){
-	this.soNV = soNV;
-    }
 
     public String getTenDonVi(){
 	return tenDonVi;
     }
-
-    public void setTenDonVi(String tenDonVi){
-	this.tenDonVi = tenDonVi;
-    }
-    
-    
-    //Ngoài ra
     
     public String getTruongDonVi(){
     // Tìm kiếm trong list i = 1:soNV
